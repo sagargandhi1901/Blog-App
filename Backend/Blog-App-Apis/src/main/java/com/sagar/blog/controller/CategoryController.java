@@ -2,13 +2,12 @@ package com.sagar.blog.controller;
 
 import com.sagar.blog.payload.ApiResponse;
 import com.sagar.blog.payload.CategoryDTO;
-import com.sagar.blog.payload.UserDTO;
 import com.sagar.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import static com.sagar.blog.constants.ApiConstant.CATEGORY_DELETE_MESSAGE;
 import java.util.List;
 
 @RestController
@@ -34,7 +33,7 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Integer categoryId) {
         this.service.deleteCategory(categoryId);
-        return new ResponseEntity<>(new ApiResponse("Category deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(CATEGORY_DELETE_MESSAGE, true), HttpStatus.OK);
     }
 
     @GetMapping("/")

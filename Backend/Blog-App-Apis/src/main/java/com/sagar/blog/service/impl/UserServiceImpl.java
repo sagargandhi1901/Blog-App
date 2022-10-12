@@ -8,7 +8,8 @@ import com.sagar.blog.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import static com.sagar.blog.constants.ApiConstant.USER;
+import static com.sagar.blog.constants.ApiConstant.ID;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDto, Integer userId) {
-        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
@@ -42,30 +43,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Integer userId) {
-        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
         return this.entityToDto(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = this.repository.findAll();
-        List<UserDTO> userDtos = users.stream().map(user -> this.entityToDto(user)).collect(Collectors.toList());
-        return userDtos;
+        return users.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteUser(Integer userId) {
-        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        User user = this.repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER, ID, userId));
         this.repository.delete(user);
     }
 
     private User dtoToEntity(UserDTO userDTO) {
-        User user = this.modelMapper.map(userDTO, User.class);
-        return user;
+        return this.modelMapper.map(userDTO, User.class);
     }
 
     private UserDTO entityToDto(User user) {
-        UserDTO userDTO = this.modelMapper.map(user, UserDTO.class);
-        return userDTO;
+        return this.modelMapper.map(user, UserDTO.class);
     }
 }

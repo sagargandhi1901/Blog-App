@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import static com.sagar.blog.constants.ApiConstant.USER_DELETE_MESSAGE;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -44,6 +44,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer userId) {
         this.service.deleteUser(userId);
-        return new ResponseEntity<>(new ApiResponse("User deleted successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(USER_DELETE_MESSAGE, true), HttpStatus.OK);
     }
 }

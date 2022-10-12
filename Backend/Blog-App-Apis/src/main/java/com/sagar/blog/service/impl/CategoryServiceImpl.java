@@ -8,7 +8,8 @@ import com.sagar.blog.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import static com.sagar.blog.constants.ApiConstant.CATEGORY;
+import static com.sagar.blog.constants.ApiConstant.ID;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, Integer categoryId) {
         Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
-                () -> new ResourceNotFoundException("category", "id", categoryId));
+                () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
         retrivedCategory.setCategoryTitle(categoryDTO.getCategoryTitle());
         retrivedCategory.setCategoryDescription(categoryDTO.getCategoryDescription());
 
@@ -42,22 +43,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Integer categoryId) {
         Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
-                () -> new ResourceNotFoundException("category", "id", categoryId));
+                () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
         this.repository.delete(retrivedCategory);
     }
 
     @Override
     public CategoryDTO getCategory(Integer categoryId) {
         Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
-                () -> new ResourceNotFoundException("category", "id", categoryId));
+                () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
         return this.modelMapper.map(retrivedCategory, CategoryDTO.class);
     }
 
     @Override
     public List<CategoryDTO> getCategories() {
         List<Category> categories = this.repository.findAll();
-        List<CategoryDTO> categoryDtos = categories.stream().map(
+        return categories.stream().map(
                 (category) -> this.modelMapper.map(category, CategoryDTO.class)).collect(Collectors.toList());
-        return categoryDtos;
     }
 }

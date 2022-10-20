@@ -31,27 +31,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, Integer categoryId) {
-        Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
+        Category retrievedCategory = this.repository.findById(categoryId).orElseThrow(
                 () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
-        retrivedCategory.setCategoryTitle(categoryDTO.getCategoryTitle());
-        retrivedCategory.setCategoryDescription(categoryDTO.getCategoryDescription());
+        retrievedCategory.setCategoryTitle(categoryDTO.getCategoryTitle());
+        retrievedCategory.setCategoryDescription(categoryDTO.getCategoryDescription());
 
-        Category updatedCategory = this.repository.save(retrivedCategory);
+        Category updatedCategory = this.repository.save(retrievedCategory);
         return this.modelMapper.map(updatedCategory, CategoryDTO.class);
     }
 
     @Override
     public void deleteCategory(Integer categoryId) {
-        Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
+        Category retrievedCategory = this.repository.findById(categoryId).orElseThrow(
                 () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
-        this.repository.delete(retrivedCategory);
+        this.repository.delete(retrievedCategory);
     }
 
     @Override
     public CategoryDTO getCategory(Integer categoryId) {
-        Category retrivedCategory = this.repository.findById(categoryId).orElseThrow(
+        Category retrievedCategory = this.repository.findById(categoryId).orElseThrow(
                 () -> new ResourceNotFoundException(CATEGORY, ID, categoryId));
-        return this.modelMapper.map(retrivedCategory, CategoryDTO.class);
+        return this.modelMapper.map(retrievedCategory, CategoryDTO.class);
     }
 
     @Override
